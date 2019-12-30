@@ -18,5 +18,3 @@ galaxy_info:
   - raspberrypi
   - zigbee
   - mqtt
-
-dependencies:
