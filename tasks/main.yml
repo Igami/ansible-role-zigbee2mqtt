@@ -25,11 +25,13 @@
     depth: 1
     dest: "{{ zigbee_dir }}"
     update: no
+  become: yes
   become_user: "{{ zigbee_user }}"
 
 - name: Install zigbee2mqtt via npm.
   npm:
     path: "{{ zigbee_dir }}"
+  become: yes
   become_user: "{{ zigbee_user }}"
 
 - name: Install configuration template.
