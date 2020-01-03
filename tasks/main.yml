@@ -34,6 +34,15 @@
   become: yes
   become_user: "{{ zigbee_user }}"
 
+- name: Generate network key.
+  template:
+    src: network_key.yaml.j2
+    dest: "{{ zigbee_dir }}/data/network_key.yaml"
+    owner: "{{ zigbee_user }}"
+    group: "{{ zigbee_user }}"
+    mode: 0600
+    force: "{{ zigbee_generate_new_network_key }}"
+
 - name: Install configuration template.
   template:
     src: configuration.yaml.j2

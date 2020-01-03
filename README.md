@@ -28,6 +28,10 @@ Role Variables
 - `zigbee_serial_port`: /dev/ttyACM0
 - `zigbee_mqtt_user`: 
 - `zigbee_mqtt_password`: 
+- `zigbee_network_key`: "'!network_key network_key'"  
+  Zigbee2mqtt uses a known default encryption key. Therefore it is recommended to use a different one.  
+  By default this role will create an random key at firstrun.
+- `zigbee_generate_new_network_key`: no
 
 Dependencies
 ------------
