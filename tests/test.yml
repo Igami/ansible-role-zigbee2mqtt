@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - igami.zigbee2mqtt
+    - ansible-role-zigbee2mqtt
