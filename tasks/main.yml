@@ -1,35 +1,29 @@
 ---
-- name: Install zigbee2mqtt dependencies.
-  ansible.builtin.package:
-    name:
-      - git
-      - npm
-
-- name: Create zigbee2mqtt user.
+- name: Create zigbee2mqtt user
   ansible.builtin.user:
     name: "{{ zigbee_user }}"
     groups: "{{ zigbee_user_groups }}"
     append: "{{ zigbee_user_append }}"
 
-- name: Create zigbee2mqtt directory.
+- name: Create zigbee2mqtt directory
   ansible.builtin.file:
     path: "{{ zigbee_dir }}"
     state: directory
     owner: "{{ zigbee_user }}"
     mode: 0700
 
-- name: Clone zigbee2mqtt repository.
+- name: Clone zigbee2mqtt repository
   register: _repo
   notify: Restart zigbee2mqtt
   ansible.builtin.git:
     repo: "{{ zigbee_repository }}"
     depth: 1
     dest: "{{ zigbee_dir }}"
-    update: "{{ zigbee_update }}"
+    update: true
     force: true
     version: "{{ zigbee_version }}"
 
-- name: Install zigbee2mqtt via npm.
+- name: Install zigbee2mqtt via npm
   when: _repo is changed # noqa: no-handler
   notify: Restart zigbee2mqtt
   community.general.npm:
@@ -45,7 +39,7 @@
     recurse: true
     owner: "{{ zigbee_user }}"
 
-- name: Generate network key.
+- name: Generate network key
   no_log: true
   notify: Restart zigbee2mqtt
   ansible.builtin.template:
@@ -56,7 +50,7 @@
     mode: 0600
     force: "{{ zigbee_generate_new_network_key }}"
 
-- name: Install configuration template.
+- name: Install configuration template
   notify: Restart zigbee2mqtt
   ansible.builtin.template:
     src: configuration.yaml.j2
@@ -64,7 +58,7 @@
     owner: "{{ zigbee_user }}"
     mode: 0600
 
-- name: Install systemd service template.
+- name: Install systemd service template
   notify:
     - Reload zigbee2mqtt daemon config
     - Start zigbee2mqtt service
