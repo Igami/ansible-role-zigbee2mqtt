@@ -1,0 +1,6 @@
+---
+- name: Converge Installation
+  hosts: all
+
+  roles:
+    - role: finalgene.zigbee2mqtt

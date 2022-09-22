@@ -1,41 +1,41 @@
 ---
-# tasks file for igami.zigbee2mqtt
-
 - name: Install zigbee2mqtt dependencies.
-  package:
+  ansible.builtin.package:
     name:
       - git
       - npm
 
 - name: Create zigbee2mqtt user.
-  user:
+  ansible.builtin.user:
     name: "{{ zigbee_user }}"
     groups: "{{ zigbee_user_groups }}"
     append: "{{ zigbee_user_append }}"
 
 - name: Create zigbee2mqtt directory.
-  file:
+  ansible.builtin.file:
     path: "{{ zigbee_dir }}"
     state: directory
     owner: "{{ zigbee_user }}"
+    mode: 0700
 
 - name: Clone zigbee2mqtt repository.
-  git:
+  ansible.builtin.git:
     repo: "{{ zigbee_repository }}"
     depth: 1
     dest: "{{ zigbee_dir }}"
-    update: no
-  become: yes
+    update: false
+    version: master
+  become: true
   become_user: "{{ zigbee_user }}"
 
 - name: Install zigbee2mqtt via npm.
-  npm:
+  community.general.npm:
     path: "{{ zigbee_dir }}"
-  become: yes
+  become: true
   become_user: "{{ zigbee_user }}"
 
 - name: Generate network key.
-  template:
+  ansible.builtin.template:
     src: network_key.yaml.j2
     dest: "{{ zigbee_dir }}/data/network_key.yaml"
     owner: "{{ zigbee_user }}"
@@ -44,19 +44,21 @@
     force: "{{ zigbee_generate_new_network_key }}"
 
 - name: Install configuration template.
-  template:
+  ansible.builtin.template:
     src: configuration.yaml.j2
     dest: "{{ zigbee_dir }}/data/configuration.yaml"
     owner: "{{ zigbee_user }}"
+    mode: 0600
 
 - name: Install systemd service template.
-  template:
+  ansible.builtin.template:
     src: zigbee2mqtt.service.j2
     dest: /etc/systemd/system/zigbee2mqtt.service
     owner: "{{ zigbee_user }}"
+    mode: 0644
 
 - name: Start zigbee2mqtt service.
-  systemd:
+  ansible.builtin.systemd:
     name: zigbee2mqtt
     enabled: true
     state: restarted

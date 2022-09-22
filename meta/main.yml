@@ -1,20 +1,21 @@
+---
 galaxy_info:
   role_name: zigbee2mqtt
-  author: igami
+  author: Frank Giesecke
   description: zigbee2mqtt on Raspbian
-
+  company: final gene
   license: BSD
-
-  min_ansible_version: 2.4
-
+  min_ansible_version: "2.13"
   platforms:
     - name: Debian
       versions:
         - buster
-
+        - bullseye
   galaxy_tags:
-  - zigbee2mqtt
-  - raspbian
-  - raspberrypi
-  - zigbee
-  - mqtt
+    - zigbee2mqtt
+    - raspbian
+    - raspberrypi
+    - zigbee
+    - mqtt
+
+dependencies: []
