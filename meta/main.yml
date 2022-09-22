@@ -12,10 +12,10 @@ galaxy_info:
         - buster
         - bullseye
   galaxy_tags:
-  - zigbee2mqtt
-  - raspbian
-  - raspberrypi
-  - zigbee
-  - mqtt
+    - zigbee2mqtt
+    - raspbian
+    - raspberrypi
+    - zigbee
+    - mqtt
 
 dependencies: []

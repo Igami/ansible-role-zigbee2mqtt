@@ -14,5 +14,5 @@ zigbee_permit_join: true
 zigbee_mqtt_base_topic: zigbee2mqtt
 zigbee_mqtt_server: mqtt://localhost
 zigbee_network_key: "'!network_key network_key'"
-zigbee_generate_new_network_key: no
+zigbee_generate_new_network_key: false
 zigbee_serial_port: /dev/ttyACM0
