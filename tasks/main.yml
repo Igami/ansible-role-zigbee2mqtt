@@ -1,6 +1,4 @@
 ---
-# tasks file for igami.zigbee2mqtt
-
 - name: Install zigbee2mqtt dependencies.
   package:
     name:

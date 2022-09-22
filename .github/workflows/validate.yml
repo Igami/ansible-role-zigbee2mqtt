@@ -1,0 +1,56 @@
+---
+name: Validate and test role
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Lint Ansible Role
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run ansible-lint
+        uses: ansible-community/ansible-lint-action@v6.2.1
+
+  molecule:
+    name: Run Molecule Tests
+    defaults:
+      run:
+        working-directory: finalgene.zigbee2mqtt
+    needs:
+      - lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - distro: debian10
+          - distro: debian11
+      fail-fast: false
+
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v3
+        with:
+          path: finalgene.zigbee2mqtt
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible molecule[docker] docker jmespath
+
+      - name: Run Molecule tests.
+        run: pwd; ls -la; molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_DISTRO: ${{ matrix.distro }}
