@@ -35,6 +35,7 @@
 - name: Clone zigbee2mqtt repository
   register: _repo
   notify: Restart zigbee2mqtt
+  changed_when: _repo.before != _repo.after
   ansible.builtin.git:
     repo: "{{ zigbee_repository }}"
     depth: 1
