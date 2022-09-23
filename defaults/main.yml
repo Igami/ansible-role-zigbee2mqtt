@@ -1,18 +1,33 @@
 ---
-# defaults file for igami.zigbee2mqtt
-
+# zigbee2mqtt user configuration
 zigbee_user: zigbee
 zigbee_user_groups: tty,dialout
 zigbee_user_append: false
 
+# zigbee2mqtt directory
 zigbee_dir: /opt/zigbee2mqtt
 
+# zigbee2mqtt source
 zigbee_repository: https://github.com/Koenkk/zigbee2mqtt.git
+zigbee_version: HEAD
 
-zigbee_homeassistant: false
-zigbee_permit_join: true
-zigbee_mqtt_base_topic: zigbee2mqtt
-zigbee_mqtt_server: mqtt://localhost
-zigbee_network_key: "'!network_key network_key'"
+# allow new devices to join
+zigbee_permit_join: false
+
+# MQTT settings
+zigbee_mqtt: {}
+
+# advanced zigbee settings
+zigbee_advanced: {}
+
+# serial port settings
+zigbee_serial: {}
+
+# frontend settings
+zigbee_frontend: {}
+
+# OTA update settings
+# See https://www.zigbee2mqtt.io/guide/usage/ota_updates.html for more info
+zigbee_ota: {}
+
 zigbee_generate_new_network_key: false
-zigbee_serial_port: /dev/ttyACM0

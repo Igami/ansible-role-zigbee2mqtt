@@ -1,0 +1,16 @@
+---
+- name: Reload zigbee2mqtt daemon config
+  ansible.builtin.systemd:
+    name: zigbee2mqtt
+    daemon_reload: true
+
+- name: Start zigbee2mqtt service
+  ansible.builtin.systemd:
+    name: zigbee2mqtt
+    enabled: true
+    state: started
+
+- name: Restart zigbee2mqtt
+  ansible.builtin.systemd:
+    name: zigbee2mqtt
+    state: restarted
