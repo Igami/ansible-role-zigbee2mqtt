@@ -12,6 +12,26 @@
     owner: "{{ zigbee_user }}"
     mode: 0700
 
+- name: check for existing data directory
+  register: _data_dir
+  ansible.builtin.stat:
+    path: "{{ zigbee_data_dir }}"
+    get_checksum: false
+
+- name: backup data directory
+  when: _data_dir.stat.exists
+  block:
+    - name: create temporary file
+      register: _backup_file
+      ansible.builtin.tempfile:
+        path: '~'
+
+    - name: create backup
+      register: _backup
+      community.general.archive:
+        path: "{{ zigbee_data_dir }}"
+        dest: "{{ _backup_file.path }}"
+
 - name: Clone zigbee2mqtt repository
   register: _repo
   notify: Restart zigbee2mqtt
@@ -31,6 +51,25 @@
     ci: true
     production: true
     no_optional: true
+
+- name: restore backup of data directory
+  when:
+    - _data_dir.stat.exists
+    - _backup_file is succeeded
+  block:
+    - name: restore backup
+      when: _backup is succeeded
+      ansible.builtin.unarchive:
+        src: "{{ _backup_file.path }}"
+        dest: "{{ zigbee_data_dir }}"
+        remote_src: true
+        extra_opts:
+          - --strip-components=1
+
+    - name: remove backup
+      ansible.builtin.file:
+        path: "{{ _backup_file.path }}"
+        state: absent
 
 - name: Set permissions for zigbee2mqtt
   ansible.builtin.file:

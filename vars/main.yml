@@ -45,3 +45,5 @@ zigbee_ota_defaults:
   update_check_interval: 1440
   # Disable automatic update checks
   disable_automatic_update_check: false
+
+zigbee_data_dir: "{{ zigbee_dir }}/data"
