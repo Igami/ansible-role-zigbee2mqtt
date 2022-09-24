@@ -50,7 +50,6 @@
   community.general.npm:
     path: "{{ zigbee_dir }}"
     ci: true
-    production: true
     no_optional: true
 
 - name: restore backup of data directory
